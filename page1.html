@@ -1,0 +1,115 @@
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>Jquery Exit Popup Demo [Page 1]</title>
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript">
+    function setCookie(key, value) {
+        var expires = new Date();
+        expires.setTime(expires.getTime() + (1 * 24 * 60 * 60 * 1000));
+        document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
+    }
+
+    function getCookie(key) {
+        var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+        return keyValue ? keyValue[2] : null;
+    }
+
+	$(document).ready(function() {
+		var popped = 0;
+		$(".exitpop").hide();
+
+        setCookie('pop','0');
+        var cookieValue = getCookie('pop');
+
+		// $.cookie("popped", 0, { expires: 1 });
+		// var cookieValue = $.cookie("popped");
+		// console.log(typeof cookieValue);
+		console.log("Initial Cookie Value: " + cookieValue);
+
+		$("html").mouseleave(function(){
+			if (cookieValue === "1" || popped == 1) {
+				var cookieValue = getCookie('pop');
+				console.log("MouseOut detected - But already popped so not displaying again.");
+				console.log("Checking Cookie : " + cookieValue);
+			} else {
+				popped = 1;
+				$.cookie("popped", 1, { expires: 1 });
+				var cookieValue = getCookie('pop');
+				console.log("MouseOut detected - showing popup & setting cookie.");
+				console.log("Checking Cookie : " + cookieValue);
+				$(".exitpop").show();
+			}
+		});
+
+		$('.button').click(function() {
+			$('.exitpop').hide();
+		});
+	});
+</script>
+
+<style>
+	html {
+		height:100%;
+	}
+
+	div.site {
+		width: 100%;
+		height: 100%;
+	}
+
+	div.title {
+		font-family: Arial;
+		size: 46px;
+		font-weight: bold;
+		padding-bottom: 40px;
+	}
+
+	div.content {
+		font-family: Arial;
+		size: 18px;
+		font-weight: normal;
+		clear: both;
+		width: 600px;
+		margin: 0 auto;
+		padding-bottom: 25px;
+	}
+
+	div.exitpop {
+		position: absolute;
+		top: 100;
+		right: 50%;
+		margin-right: -150;
+		width: 300px;
+		border: 2px solid #122739;
+		padding: 20px;
+		font-family: arial;
+		background-color: #fff;
+	}
+
+	div.button {
+		text-align: center;
+		background-color: #F0575E;
+		color: #000;
+		width: 75px;
+		padding: 10px 5px 10px 5px;
+		font-family: arial;
+		margin: 0 auto;
+	}
+</style>
+</head>
+<body>
+<div class="site">
+	<div class="content">
+		<div class="title">jQuery Exit Popup Demo</div>
+		<div class="content">This demo is to show how to display a popup to the user when the mouse passes outside the browser viewport using jQuery.  Generally this is a very annoying feature, however it is desirable for ecommerce platforms that want to attempt to retain visitors if certain conditions are met.</div>
+		<div class="content">This demo uses cookies! Check the console log for additional messages as well.</div>
+	</div>
+</div>
+<div class="exitpop">
+	<p>This is the exit pop div.</p>
+	<div class="button">Dismiss</div>
+</div>
+</body>
